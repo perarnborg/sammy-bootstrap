@@ -1,0 +1,21 @@
+{
+  "name": "sammytest",
+  "version": "0.0.1",
+  "description": "Sammy test",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/perarnborg/sammy.git"
+  },
+  "author": "Per Arnborg",
+  "license": "BSD-2-Clause",
+  "homepage": "http://sammy.perarnborg.se",
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "grunt-contrib-sass": "~0.7.3",
+    "grunt-contrib-uglify": "~0.4.0",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-coffee": "~0.10.1",
+    "grunt-contrib-concat": "~0.5.0",
+    "node-bourbon": "~1.0.0"
+  }
+}

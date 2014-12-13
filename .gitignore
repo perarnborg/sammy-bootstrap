@@ -1,0 +1,10 @@
+.*
+*~
+!.gitignore
+!.htaccess
+deploy
+cache/*
+node_modules
+js/_*/*.js
+js/app*.js
+css/app*.css
