@@ -1,6 +1,10 @@
-(function($) {
-
-  Sammy = Sammy || {};
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(['jquery', 'sammy'], factory);
+  } else {
+    (window.Sammy = window.Sammy || {}).Storage = factory(window.jQuery, window.Sammy);
+  }
+}(function ($, Sammy) {
 
   // Sammy.Store is an abstract adapter class that wraps the multitude of in
   // browser data storage into a single common set of methods for storing and
@@ -16,18 +20,18 @@
   //
   // ### Example
   //
-  //      // create a new store named 'mystore', tied to the #main element, using HTML5 localStorage
-  //      // Note: localStorage only works on browsers that support it
-  //      var store = new Sammy.Store({name: 'mystore', element: '#element', type: 'local'});
-  //      store.set('foo', 'bar');
-  //      store.get('foo'); //=> 'bar'
-  //      store.set('json', {obj: 'this is an obj'});
-  //      store.get('json'); //=> {obj: 'this is an obj'}
-  //      store.keys(); //=> ['foo','json']
-  //      store.clear('foo');
-  //      store.keys(); //=> ['json']
-  //      store.clearAll();
-  //      store.keys(); //=> []
+  //       // create a new store named 'mystore', tied to the #main element, using HTML5 localStorage
+  //       // Note: localStorage only works on browsers that support it
+  //       var store = new Sammy.Store({name: 'mystore', element: '#element', type: 'local'});
+  //       store.set('foo', 'bar');
+  //       store.get('foo'); //=> 'bar'
+  //       store.set('json', {obj: 'this is an obj'});
+  //       store.get('json'); //=> {obj: 'this is an obj'}
+  //       store.keys(); //=> ['foo','json']
+  //       store.clear('foo');
+  //       store.keys(); //=> ['json']
+  //       store.clearAll();
+  //       store.keys(); //=> []
   //
   // ### Arguments
   //
@@ -80,7 +84,7 @@
       if ($.isFunction(this.storage.isAvailable)) {
         return this.storage.isAvailable();
       } else {
-        true;
+        return true;
       }
     },
     // Checks for the existance of `key` in the current store. Returns a boolean.
@@ -94,11 +98,11 @@
     //
     // ### Example
     //
-    //      var store = new Sammy.Store({name: 'kvo'});
-    //      $('body').bind('set-kvo-foo', function(e, data) {
-    //        Sammy.log(data.key + ' changed to ' + data.value);
-    //      });
-    //      store.set('foo', 'bar'); // logged: foo changed to bar
+    //     var store = new Sammy.Store({name: 'kvo'});
+    //     $('body').bind('set-kvo-foo', function(e, data) {
+    //       Sammy.log(data.key + ' changed to ' + data.value);
+    //     });
+    //     store.set('foo', 'bar'); // logged: foo changed to bar
     //
     set: function(key, value) {
       var string_value = (typeof value == 'string') ? value : JSON.stringify(value);
@@ -108,7 +112,7 @@
         this._addKey(key);
         this.$element.trigger('set-' + this.name, {key: key, value: value});
         this.$element.trigger('set-' + this.name + '-' + key, {key: key, value: value});
-      };
+      }
       // always return the original value
       return value;
     },
@@ -146,9 +150,9 @@
     //
     // ### Example
     //
-    //      store.each(function(key, value) {
-    //        Sammy.log('key', key, 'value', value);
-    //      });
+    //     store.each(function(key, value) {
+    //       Sammy.log('key', key, 'value', value);
+    //     });
     //
     each: function(callback) {
       var i = 0,
@@ -158,7 +162,7 @@
       for (i; i < keys.length; i++) {
         returned = callback(keys[i], this.get(keys[i]));
         if (returned === false) { return false; }
-      };
+      }
     },
     // Filters the store by a filter function that takes a key value.
     // Returns an array of arrays where the first element of each array
@@ -166,15 +170,15 @@
     //
     // ### Example
     //
-    //      var store = new Sammy.Store;
-    //      store.set('one', 'two');
-    //      store.set('two', 'three');
-    //      store.set('1', 'two');
-    //      var returned = store.filter(function(key, value) {
-    //        // only return
-    //        return value === 'two';
-    //      });
-    //      // returned => [['one', 'two'], ['1', 'two']];
+    //     var store = new Sammy.Store;
+    //     store.set('one', 'two');
+    //     store.set('two', 'three');
+    //     store.set('1', 'two');
+    //     var returned = store.filter(function(key, value) {
+    //       // only return
+    //       return value === 'two';
+    //     });
+    //     // returned => [['one', 'two'], ['1', 'two']];
     //
     filter: function(callback) {
       var found = [];
@@ -203,15 +207,15 @@
     //
     // ### Example
     //
-    //    var store = new Sammy.Store;
-    //    store.exists('foo'); //=> false
-    //    store.fetch('foo', function() {
-    //      return 'bar!';
-    //    }); //=> 'bar!'
-    //    store.get('foo') //=> 'bar!'
-    //    store.fetch('foo', function() {
-    //      return 'baz!';
-    //    }); //=> 'bar!
+    //     var store = new Sammy.Store;
+    //     store.exists('foo'); //=> false
+    //     store.fetch('foo', function() {
+    //       return 'bar!';
+    //     }); //=> 'bar!'
+    //     store.get('foo') //=> 'bar!'
+    //     store.fetch('foo', function() {
+    //       return 'baz!';
+    //     }); //=> 'bar!
     //
     fetch: function(key, callback) {
       if (!this.exists(key)) {
@@ -226,14 +230,14 @@
     //
     // In /mytemplate.tpl:
     //
-    //    My Template
+    //     My Template
     //
     // In app.js:
     //
-    //    var store = new Sammy.Store;
-    //    store.load('mytemplate', '/mytemplate.tpl', function() {
-    //      s.get('mytemplate') //=> My Template
-    //    });
+    //     var store = new Sammy.Store;
+    //     store.load('mytemplate', '/mytemplate.tpl', function() {
+    //       s.get('mytemplate') //=> My Template
+    //     });
     //
     load: function(key, path, callback) {
       var s = this;
@@ -327,8 +331,8 @@
   // on the latest and greatest browsers.
   //
   // For more info on DOM Storage:
-  // [https://developer.mozilla.org/en/DOM/Storage]
-  // [http://www.w3.org/TR/2009/WD-webstorage-20091222/]
+  // https://developer.mozilla.org/en/DOM/Storage
+  // http://www.w3.org/TR/2009/WD-webstorage-20091222/
   //
   Sammy.Store.LocalStorage = function(name, element) {
     this.name = name;
@@ -403,7 +407,7 @@
   // * `path` The path to activate the current cookie for (default '/').
   //
   // For more information about document.cookie, check out the pre-eminint article
-  // by ppk: [http://www.quirksmode.org/js/cookies.html]
+  // by ppk: http://www.quirksmode.org/js/cookies.html
   //
   Sammy.Store.Cookie = function(name, element, options) {
     this.name = name;
@@ -434,7 +438,7 @@
     },
     _getCookie: function(key) {
       var escaped = this._key(key).replace(/(\.|\*|\(|\)|\[|\])/g, '\\$1');
-      var match = document.cookie.match("(^|;\\s)" + escaped + "=([^;]*)(;|$)")
+      var match = document.cookie.match("(^|;\\s)" + escaped + "=([^;]*)(;|$)");
       return (match ? match[2] : null);
     },
     _setCookie: function(key, value, expires) {
@@ -465,36 +469,36 @@
     //
     // ### Example
     //
-    //      var app = $.sammy(function() {
-    //        this.use(Sammy.Storage);
+    //     var app = $.sammy(function() {
+    //       this.use(Sammy.Storage);
     //
-    //        // initializes the store on app creation.
-    //        this.store('mystore', {type: 'cookie'});
+    //       // initializes the store on app creation.
+    //       this.store('mystore', {type: 'cookie'});
     //
-    //        this.get('#/', function() {
-    //          // returns the Sammy.Store object
-    //          this.store('mystore');
-    //          // sets 'foo' to 'bar' using the shortcut/helper
-    //          // equivilent to this.store('mystore').set('foo', 'bar');
-    //          this.mystore('foo', 'bar');
-    //          // returns 'bar'
-    //          // equivilent to this.store('mystore').get('foo');
-    //          this.mystore('foo');
-    //          // returns 'baz!'
-    //          // equivilent to:
-    //          // this.store('mystore').fetch('foo!', function() {
-    //          //   return 'baz!';
-    //          // })
-    //          this.mystore('foo!', function() {
-    //            return 'baz!';
-    //          });
+    //       this.get('#/', function() {
+    //         // returns the Sammy.Store object
+    //         this.store('mystore');
+    //         // sets 'foo' to 'bar' using the shortcut/helper
+    //         // equivilent to this.store('mystore').set('foo', 'bar');
+    //         this.mystore('foo', 'bar');
+    //         // returns 'bar'
+    //         // equivilent to this.store('mystore').get('foo');
+    //         this.mystore('foo');
+    //         // returns 'baz!'
+    //         // equivilent to:
+    //         // this.store('mystore').fetch('foo!', function() {
+    //         //   return 'baz!';
+    //         // })
+    //         this.mystore('foo!', function() {
+    //           return 'baz!';
+    //         });
     //
-    //          this.clearMystore();
-    //          // equivilent to:
-    //          // this.store('mystore').clearAll()
-    //        });
+    //         this.clearMystore();
+    //         // equivilent to:
+    //         // this.store('mystore').clearAll()
+    //       });
     //
-    //      });
+    //     });
     //
     // ### Arguments
     //
@@ -574,4 +578,6 @@
     this.store('cache', $.extend({type: ['local', 'session', 'memory']}, options));
   };
 
-})(jQuery);
+  return Sammy.Storage;
+
+}));
