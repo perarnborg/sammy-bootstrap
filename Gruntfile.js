@@ -52,11 +52,11 @@ module.exports = function(grunt) {
         separator: ';'
       },
       run: {
-        src: ['js/libs/jquery-2.1.1.min.js', 'js/libs/handlebars-2.0.0.js', 'js/libs/sammy/sammy.js', 'js/libs/sammy/sammy.handlebars.js', 'js/application.js'],
+        src: ['js/libs/jquery-2.1.1.min.js', 'js/libs/handlebars-2.0.0.js', 'js/libs/sammy/sammy.js', 'js/libs/sammy/plugins/sammy.handlebars.js', 'js/application.js'],
         dest: 'js/app.js'
       },
       build: {
-        src: ['js/libs/jquery-2.1.1.min.js', 'js/libs/handlebars-2.0.0.min.js', 'js/libs/sammy/min/sammy-0.7.6.js', 'js/libs/sammy/min/sammy.handlebars-0.7.6.js', 'js/application.min.js'],
+        src: ['js/libs/jquery-2.1.1.min.js', 'js/libs/handlebars-2.0.0.min.js', 'js/libs/sammy/min/sammy-0.7.6.js', 'js/libs/sammy/min/plugins/sammy.handlebars-0.7.6.js', 'js/application.min.js'],
         dest: 'js/app.min.js'
       }
     },
