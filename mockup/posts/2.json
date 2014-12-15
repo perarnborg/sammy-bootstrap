@@ -1,4 +1,9 @@
 {
-"id": 2,
-    "name" "Post 2"
+  "id": 2,
+  "title": "Album",
+  "artist": "Girls",
+  "image": "http://ecx.images-amazon.com/images/I/51hDxOeIeML._SS250_.jpg",
+  "large_image": "http://ecx.images-amazon.com/images/I/51hDxOeIeML._SS500_.jpg",
+  "price": 13.98,
+  "url": "http://www.amazon.com/gp/product/B002GNOMJE?ie=UTF8&tag=quirkeycom-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=B002GNOMJE"
 }

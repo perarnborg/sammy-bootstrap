@@ -1,28 +1,24 @@
 app.sammy = Sammy('#main', ->
   # include the plugin and alias handlebars() to hb()
-  this.use('Handlebars', 'hb')
+  @use('Handlebars', 'hb')
+  # if we want app wide api data, like a cart or user
+#  @around (callback) ->
+#    context = @
+#    app.api.get('user', userId).then((user) ->
+#      context.user = user
+#    ).then(callback)
   # routes with templates
-  this.get('#/', (context) ->
-    app.template.render(this, 'index')
-    return
+  @get('#/', (context) ->
+    app.controller = new app.IndexController(context)
+    app.controller.render()
   )
-  this.get('#/posts', (context) ->
-    this.load('mockup/posts.json')
-      .then (posts) ->
-        console.log posts
-        return
-
-
-    app.api.list(this, 'posts').then (posts) ->
-      app.template.render(this, 'posts', posts)
-      return
-    return
+  @get('#/posts', (context) ->
+    app.controller = new app.PostsController(context)
+    app.controller.render()
   )
-  this.get('#/post/:id', (context) ->
-    this.load('mockup/posts/' + id + '.json').then (post) ->
-      app.template.render(this, 'posts', post)
-      return
-    return
+  @get('#/post/:id', (context) ->
+    app.controller = new app.PostController(context)
+    app.controller.render()
   )
   return
 )
@@ -30,3 +26,4 @@ $(->
   app.sammy.run()
   return
 )
+
