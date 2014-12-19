@@ -8,7 +8,7 @@ app.sammy = Sammy('#main', ->
 #      context.user = user
 #    ).then(callback)
   # routes with templates
-  @get('#/', (context) ->
+  @get('/', (context) ->
     app.controller = new app.IndexController(context)
     app.controller.render()
   )
